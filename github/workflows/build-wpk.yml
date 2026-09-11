@@ -1,0 +1,43 @@
+name: Crear APK Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Instalar Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Preparar Android
+        uses: android-actions/setup-android@v4
+
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.10'
+
+      - name: Descomprimir proyecto
+        run: |
+          mkdir proyecto
+          unzip -q ComparadorPreciosAndroid-listo.zip -d proyecto
+
+      - name: Crear APK
+        working-directory: proyecto/ComparadorPreciosAndroid
+        run: gradle assembleDebug --no-daemon
+
+      - name: Guardar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ComparadorPrecios-APK
+          path: proyecto/ComparadorPreciosAndroid/app/build/outputs/apk/debug/app-debug.apk
