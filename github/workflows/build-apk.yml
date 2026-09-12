@@ -31,7 +31,8 @@ jobs:
         run: |
           mkdir proyecto
           unzip -q ComparadorPreciosAndroid-listo.zip -d proyecto
-          cp gradle.properties proyecto/ComparadorPreciosAndroid/gradle.properties
+          echo "android.useAndroidX=true" > proyecto/ComparadorPreciosAndroid/gradle.properties
+          echo "android.enableJetifier=true" >> proyecto/ComparadorPreciosAndroid/gradle.properties
           
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
