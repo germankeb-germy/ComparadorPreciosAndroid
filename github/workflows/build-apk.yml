@@ -36,7 +36,7 @@ jobs:
           echo "android.enableJetifier=true" >> ~/.gradle/gradle.properties
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
-        run: gradle assembleDebug --no-daemon
+        run: gradle assembleDebug --no-daemon -Dorg.gradle.project.android.useAndroidX=true -Dorg.gradle.project.android.enableJetifier=true
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
