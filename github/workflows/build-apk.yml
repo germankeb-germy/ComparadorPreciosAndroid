@@ -28,16 +28,15 @@ jobs:
           gradle-version: '8.10'
 
       - name: Descomprimir proyecto
-        run: |
+          run: |
           mkdir proyecto
           unzip -q ComparadorPreciosAndroid-listo.zip -d proyecto
-          echo "android.useAndroidX=true" > proyecto/ComparadorPreciosAndroid/gradle.properties
-          echo "android.enableJetifier=true" >> proyecto/ComparadorPreciosAndroid/gradle.properties
-          
+          mkdir -p ~/.gradle
+          echo "android.useAndroidX=true" >> ~/.gradle/gradle.properties
+          echo "android.enableJetifier=true" >> ~/.gradle/gradle.properties
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
-        run: gradle assembleDebug --no-daemon -Pandroid.useAndroidX=true -Pandroid.enableJetifier=true
-
+        run: gradle assembleDebug --no-daemon
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
