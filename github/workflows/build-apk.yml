@@ -36,7 +36,7 @@ jobs:
           
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
-        run: gradle assembleDebug --no-daemon
+        run: gradle assembleDebug --no-daemon -Pandroid.useAndroidX=true -Pandroid.enableJetifier=true
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
