@@ -36,9 +36,10 @@ jobs:
       - name: Activar AndroidX
         working-directory: proyecto/ComparadorPreciosAndroid
         run: |
-          echo "android.useAndroidX=true" > gradle.properties
-          echo "android.enableJetifier=true" >> gradle.properties
-          cat gradle.properties
+        echo "android.useAndroidX=true" > gradle.properties
+       echo "android.enableJetifier=true" >> gradle.properties
+       echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
+       cat gradle.properties
 
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
