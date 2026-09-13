@@ -31,7 +31,14 @@ jobs:
       - name: Descomprimir proyecto
         run: |
           mkdir proyecto
-          unzip -q ComparadorPreciosAndroid-listo.zip -d proyecto
+          unzip -q ComparadorPreciosAndroid-corregido.zip -d proyecto
+      - name: Activar AndroidX
+        working-directory: proyecto/ComparadorPreciosAndroid
+        run: |
+          echo "android.useAndroidX=true" > gradle.properties
+          echo "android.enableJetifier=true" >> gradle.properties
+          cat gradle.properties
+          
 
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
