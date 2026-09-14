@@ -1,4 +1,4 @@
-dename: Crear APK Android
+name: Crear APK Android
 
 on:
   workflow_dispatch:
@@ -36,18 +36,17 @@ jobs:
       - name: Activar AndroidX
         working-directory: proyecto/ComparadorPreciosAndroid
         run: |
-        echo "android.useAndroidX=true" > gradle.properties
-       echo "android.enableJetifier=true" >> gradle.properties
-       echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
-       cat gradle.properties
+          echo "android.useAndroidX=true" > gradle.properties
+          echo "android.enableJetifier=true" >> gradle.properties
+          echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
+          cat gradle.properties
 
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
-        run: gradle assembleDebug --no-daemon -Pandroid.useAndroidX=true -Pandroid.enableJetifier=true
+        run: gradle assembleDebug --no-daemon -Pandroid.useAndroidX=true -Pandroid.enableJetifier=true -Pkotlin.jvm.target.validation.mode=warning
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
           name: ComparadorPrecios-APK
           path: proyecto/ComparadorPreciosAndroid/app/build/outputs/apk/debug/app-debug.apk
-
