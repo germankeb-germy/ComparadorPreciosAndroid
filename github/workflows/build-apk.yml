@@ -39,6 +39,7 @@ jobs:
           echo "android.useAndroidX=true" > gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
           echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
+          echo "kotlin.jvm.target.validation.mode=warning" >> gradle.properties
           cat gradle.properties
 
       - name: Crear APK
