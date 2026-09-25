@@ -28,10 +28,10 @@ jobs:
         with:
           gradle-version: '8.10'
 
-      - name: Descomprimir proyecto
+          - name: Descomprimir proyecto
         run: |
-          mkdir proyecto
-          unzip -q ComparadorPreciosAndroid-JVM17.zip -d proyecto
+          mkdir -p proyecto/ComparadorPreciosAndroid
+          unzip -q ComparadorPreciosAndroid-JVM17.zip -d proyecto/ComparadorPreciosAndroid
       - name: Activar AndroidX
         working-directory: proyecto/ComparadorPreciosAndroid
         run: |
