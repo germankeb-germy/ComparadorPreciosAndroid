@@ -31,22 +31,30 @@ jobs:
       - name: Descomprimir proyecto
         run: |
           mkdir -p proyecto/ComparadorPreciosAndroid
-                  unzip -q ComparadorPreciosAndroid-JVM17.zip -d proyecto/ComparadorPreciosAndroid
-
-      - name: Activar AndroidX
-        working-directory: proyecto/ComparadorPreciosAndroid
+       - name: Descomprimir proyecto
         run: |
+          rm -rf proyecto
+          mkdir proyecto
+          unzip -q ComparadorPreciosAndroid-JVM17.zip -d proyecto
+          find proyecto -name settings.gradle.kts -print
+
+        - name: Activar AndroidX
+        run: |
+          DIR=$(dirname "$(find proyecto -name settings.gradle.kts -print -quit)")
+          echo "PROJECT_DIR=$DIR" >> "$GITHUB_ENV"
+          cd "$DIR"
           echo "android.useAndroidX=true" > gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
           echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
-          cat gradle.properties
+          cat gradle.propertie
 
       - name: Crear APK
-        working-directory: proyecto/ComparadorPreciosAndroid
-        run: gradle assembleDebug --no-daemon
+        run: |
+          cd "$DIR"
+          gradle assembleDebug --no-daemon
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
           name: ComparadorPrecios-APK
-          path: proyecto/ComparadorPreciosAndroid/app/build/outputs/apk/debug/app-debug.apk
+          path: proyecto/**/app/build/outputs/apk/debug/app-debug.apk
