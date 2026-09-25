@@ -31,7 +31,7 @@ jobs:
       - name: Descomprimir proyecto
         run: |
           mkdir proyecto
-          unzip -q ComparadorPreciosAndroid-corregido.zip -d proyecto
+          unzip -q ComparadorPreciosAndroid-corregido -Java17.zip -d proyecto
 
       - name: Activar AndroidX
         working-directory: proyecto/ComparadorPreciosAndroid
@@ -52,4 +52,5 @@ jobs:
           name: ComparadorPrecios-APK
           path: proyecto/ComparadorPreciosAndroid/app/build/outputs/apk/debug/app-debug.apk
 
+ 
  
