@@ -1,0 +1,52 @@
+name: Crear APK Android
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar proyecto
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Preparar Android
+        uses: android-actions/setup-android@v4
+
+      - name: Instalar Gradle
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          gradle-version: '8.10'
+
+      - name: Descomprimir proyecto
+        run: |
+          mkdir -p proyecto/ComparadorPreciosAndroid
+          unzip -q ComparadorPreciosAndroid-JVM17.zip -d proyecto/ComparadorPreciosAndroid
+
+      - name: Activar AndroidX
+        working-directory: proyecto/ComparadorPreciosAndroid
+        run: |
+          echo "android.useAndroidX=true" > gradle.properties
+          echo "android.enableJetifier=true" >> gradle.properties
+          echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
+          cat gradle.properties
+
+      - name: Crear APK
+        working-directory: proyecto/ComparadorPreciosAndroid
+        run: gradle assembleDebug --no-daemon
+
+      - name: Guardar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: ComparadorPrecios-APK
+          path: proyecto/ComparadorPreciosAndroid/app/build/outputs/apk/debug/app-debug.apk
