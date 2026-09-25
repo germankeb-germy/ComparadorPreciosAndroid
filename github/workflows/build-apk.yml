@@ -44,7 +44,7 @@ jobs:
 
       - name: Crear APK
         working-directory: proyecto/ComparadorPreciosAndroid
-        run: gradle assembleDebug --no-daemon -Pkotlin.jvm.target.validation.mode=warning
+        run: gradle assembleDebug --no-daemon
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
@@ -52,5 +52,6 @@ jobs:
           name: ComparadorPrecios-APK
           path: proyecto/ComparadorPreciosAndroid/app/build/outputs/apk/debug/app-debug.apk
 
+ 
  
  
