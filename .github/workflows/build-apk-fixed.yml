@@ -30,15 +30,13 @@ jobs:
 
       - name: Descomprimir proyecto
         run: |
-          mkdir -p proyecto/ComparadorPreciosAndroid
-       - name: Descomprimir proyecto
-        run: |
           rm -rf proyecto
-          mkdir proyecto
+          mkdir -p proyecto
           unzip -q ComparadorPreciosAndroid-JVM17.zip -d proyecto
+          echo "Proyecto descomprimido:"
           find proyecto -name settings.gradle.kts -print
 
-        - name: Activar AndroidX
+      - name: Activar AndroidX
         run: |
           DIR=$(dirname "$(find proyecto -name settings.gradle.kts -print -quit)")
           echo "PROJECT_DIR=$DIR" >> "$GITHUB_ENV"
@@ -46,11 +44,10 @@ jobs:
           echo "android.useAndroidX=true" > gradle.properties
           echo "android.enableJetifier=true" >> gradle.properties
           echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
-          cat gradle.propertie
 
       - name: Crear APK
         run: |
-          cd "$DIR"
+          cd "$PROJECT_DIR"
           gradle assembleDebug --no-daemon
 
       - name: Guardar APK
