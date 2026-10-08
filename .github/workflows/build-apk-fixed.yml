@@ -32,7 +32,7 @@ jobs:
         run: |
           rm -rf proyecto
           mkdir -p proyecto
-          unzip -q ComparadorPreciosAndroid-V5.4-PU-Sonido.zip -d proyecto
+          unzip -q ComparadorPreciosAndroid-V5.5-Compacto-Diana-Icono.zip -d proyecto
           echo "Proyecto descomprimido:"
           find proyecto -name settings.gradle.kts -print
 
