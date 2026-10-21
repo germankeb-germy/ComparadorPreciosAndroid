@@ -32,7 +32,7 @@ jobs:
         run: |
           rm -rf proyecto
           mkdir -p proyecto
-          unzip -q ComparadorPreciosAndroid-V5.7.zip -d proyecto
+          unzip -q ComparadorPreciosAndroid-V5.8.zip -d proyecto
           echo "Proyecto descomprimido:"
           find proyecto -name settings.gradle.kts -print
 
@@ -45,11 +45,20 @@ jobs:
           echo "android.enableJetifier=true" >> gradle.properties
           echo "org.gradle.jvmargs=-Xmx2048m" >> gradle.properties
 
-      - name: Crear APK
+      - name: Preparar firma estable
+        env:
+          KEYSTORE_BASE64: ${{ secrets.COMPARADOR_KEYSTORE_BASE64 }}
+        run: |
+          printf '%s' "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/comparador-release.jks"
+          echo "COMPARADOR_KEYSTORE_PATH=$RUNNER_TEMP/comparador-release.jks" >> "$GITHUB_ENV"
+       - name: Crear APK
+        env:
+          COMPARADOR_STORE_PASSWORD: ${{ secrets.COMPARADOR_KEYSTORE_PASSWORD }}
+          COMPARADOR_KEY_ALIAS: ${{ secrets.COMPARADOR_KEY_ALIAS }}
+          COMPARADOR_KEY_PASSWORD: ${{ secrets.COMPARADOR_KEY_PASSWORD }}
         run: |
           cd "$PROJECT_DIR"
           gradle assembleDebug --no-daemon
-
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
