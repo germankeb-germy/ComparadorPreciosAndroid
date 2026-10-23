@@ -5,10 +5,11 @@ on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Descargar proyecto
         uses: actions/checkout@v4
@@ -50,7 +51,8 @@ jobs:
         run: |
           printf '%s' "$KEYSTORE_BASE64" | base64 -d > "$RUNNER_TEMP/comparador-release.jks"
           echo "COMPARADOR_KEYSTORE_PATH=$RUNNER_TEMP/comparador-release.jks" >> "$GITHUB_ENV"
-       - name: Crear APK
+
+      - name: Crear APK
         env:
           COMPARADOR_STORE_PASSWORD: ${{ secrets.COMPARADOR_KEYSTORE_PASSWORD }}
           COMPARADOR_KEY_ALIAS: ${{ secrets.COMPARADOR_KEY_ALIAS }}
@@ -58,6 +60,7 @@ jobs:
         run: |
           cd "$PROJECT_DIR"
           gradle assembleDebug --no-daemon
+
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
